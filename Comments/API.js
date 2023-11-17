@@ -25,15 +25,16 @@ export function getComments() {
 }
 
 export function commentPost() {
+    let commentInput = document.querySelector('.add-form-text')
+    console.log(commentInput.value)
     return fetch(commentsURL, {
         method: 'POST',
         headers: {
             Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-            name: sanitizeHtml(nameInput.value),
-            text: sanitizeHtml(commentInput.value),
-            forceError: false,
+            // name: sanitizeHtml(nameInput.value),
+            text: "dfghj",
         }),
     }).then((response) => {
         if (response.status === 400) {

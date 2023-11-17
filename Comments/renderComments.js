@@ -62,7 +62,6 @@ export function renderComments({ comments, isLoading }) {
     <textarea type="textarea" class="add-form-text" placeholder="Введите ваш комментарий" rows="4"></textarea>
     <div class="add-form-row">
       <button class="add-form-button">Написать</button>
-      <button class="add-form-btn">Записать</button>
     </div>
   </div>
   <button class="delete-form-button">Удалить последний комментарий</button> 
@@ -82,28 +81,30 @@ export function renderComments({ comments, isLoading }) {
 
     const linkToLoginElement = document.getElementById('link-to-login')
     let addButton = document.querySelector('.add-form-button')
-
+    console.log(addButton)
     linkToLoginElement?.addEventListener('click', () => {
         // null или undef. обработчик события не сработает
         renderLogin()
     })
     if (user) {
-        if (commentInput && addButton) {
-            commentInput.addEventListener('input')
+        if (addButton) {
+            console.log("gdfghjkl")
+            // commentInput.addEventListener('input')
 
-            addButton.addEventListener('click', pullComment())
+            addButton.addEventListener('click', pullComment)
 
-            addButton.addEventListener('keyup', function (event) {
-                if (event.which === 13) {
-                    pullComment()
-                }
-            })
-        } else {
+            // addButton.addEventListener('keyup', function (event) {
+            //     if (event.which === 13) {
+            //         pullComment()
+            //     }
+            // })
             return
         }
     }
 
     function pullComment(event) {
+        let commentInput = document.querySelector('.add-form-text')
+        console.log(commentInput)
         if (commentInput.value === '') {
             commentInput.classList.add('error')
             return

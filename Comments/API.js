@@ -1,5 +1,5 @@
 const userURL = 'https://wedev-api.sky.pro/api/user/login'
-const commentsURL = 'https://wedev-api.sky.pro/api/v1/sveta-kosuhina/comments'
+const commentsURL = 'https://wedev-api.sky.pro/api/v2/sveta-kosuhina/comments'
 
 export let token
 
@@ -8,7 +8,6 @@ export const setToken = (newToken) => {
 }
 
 import { sanitizeHtml } from './utils.js'
-import { nameInput, commentInput } from './const.js'
 
 export function getComments() {
     return fetch(commentsURL, {
@@ -24,9 +23,7 @@ export function getComments() {
     })
 }
 
-export function commentPost() {
-    let commentInput = document.querySelector('.add-form-text')
-    console.log(commentInput.value)
+export function commentPost(nameInput) {
     return fetch(commentsURL, {
         method: 'POST',
         headers: {
@@ -34,7 +31,7 @@ export function commentPost() {
         },
         body: JSON.stringify({
             // name: sanitizeHtml(nameInput.value),
-            text: "dfghj",
+            text: sanitizeHtml(nameInput.value),
         }),
     }).then((response) => {
         if (response.status === 400) {
@@ -63,6 +60,21 @@ export function login({ login, password }) {
         }
         if (responseData.status === 201) {
             return responseData.json()
+        }
+    })
+}
+export function deletePost(id) {
+    return fetch(commentsURL + `/${id}`, {
+        method: 'DELETE',
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    }).then((responseData) => {
+        console.log(id)
+        if (responseData.status === 201) {
+            return responseData.json()
+        } else {
+            throw new Error('Невозможно удалить комментарий')
         }
     })
 }

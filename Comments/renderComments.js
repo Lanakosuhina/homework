@@ -2,6 +2,7 @@ import {
     likeComment,
     answerCommentListener,
     editComment,
+    clickDelete,
 } from './additional.js'
 import { commentInput } from './const.js'
 import { appElement, addForm } from './const.js'
@@ -78,33 +79,31 @@ export function renderComments({ comments, isLoading }) {
     likeComment(comments)
     answerCommentListener(comments)
     editComment(comments)
+    clickDelete(comments)
 
     const linkToLoginElement = document.getElementById('link-to-login')
     let addButton = document.querySelector('.add-form-button')
-    console.log(addButton)
     linkToLoginElement?.addEventListener('click', () => {
         // null или undef. обработчик события не сработает
         renderLogin()
     })
     if (user) {
         if (addButton) {
-            console.log("gdfghjkl")
-            // commentInput.addEventListener('input')
+            //  commentInput.addEventListener('input')
 
             addButton.addEventListener('click', pullComment)
 
-            // addButton.addEventListener('keyup', function (event) {
-            //     if (event.which === 13) {
-            //         pullComment()
-            //     }
-            // })
+            addButton.addEventListener('keyup', function (event) {
+                if (event.which === 13) {
+                    pullComment()
+                }
+            })
             return
         }
     }
 
     function pullComment(event) {
         let commentInput = document.querySelector('.add-form-text')
-        console.log(commentInput)
         if (commentInput.value === '') {
             commentInput.classList.add('error')
             return
@@ -114,7 +113,7 @@ export function renderComments({ comments, isLoading }) {
         addButton.textContent = 'Комментарий добавляется...'
 
         event.stopPropagation()
-        commentPost()
+        commentPost(commentInput)
             .then(() => {
                 return [commentInput.value]
             })

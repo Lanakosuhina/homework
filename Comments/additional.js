@@ -1,5 +1,9 @@
 import { delay } from './utils.js'
 import { renderComments } from './renderComments.js'
+import { commentInput } from './const.js'
+import { deletePost } from './API.js'
+import { user } from './main.js'
+
 // ФУНКЦИЯ ДЛЯ ДОБАВЛЕНИЯ ЛАЙКА
 
 export const likeComment = (comments) => {
@@ -34,10 +38,12 @@ export const answerCommentListener = (comments) => {
     for (const commentElement of commentsElement) {
         commentElement.addEventListener('click', () => {
             const index = commentElement.dataset.index
+
             if (comments[index].isEdited) return
 
-            let commentInput = document.querySelector('.add-form-text')
-            commentInput.value = `QUOTE_BEGIN ${comments[index].name}: \n ${comments[index].text} QUOTE_END`
+            let commentText = document.querySelector('.comment-text')
+            commentText.value = `QUOTE_BEGIN ${comments[index].name}: \n ${comments[index].text} QUOTE_END`
+            commentText.value = commentInput.innerHTML
             renderComments({ comments })
         })
     }
@@ -69,18 +75,19 @@ export const editComment = (comments) => {
 }
 
 // УДАЛЕНИЕ ПОСЛЕДНЕГО КОММЕНТАРИЯ И ОБРАБОТЧИК СОБЫТИЯ
-// const deleteButton = document.querySelector('.delete-form-button')
-//    const id = deleteButton.dataset.id;
 
-// const deleteButtonsListeners = (comments) => {
-//     deleteButton.addEventListener('click', () => {
-//         const lastCommentIndex = comments.length - 1
-//         comments.splice(lastCommentIndex, 1)
+export const clickDelete = (comments) => {
+    const deleteButton = document.querySelector('.delete-form-button')
+    console.log(deleteButton)
+    if (user) {
+        deleteButton.addEventListener('click', () => {
+            const id = deleteButton.dataset.id
+            deletePost(id).then(() => {
+                const lastCommentIndex = comments.length - 1
+                comments.splice(lastCommentIndex, 1)
 
-//         renderComments({ comments })
-//     })
-// }
-
-// deleteButtonsListeners(comments);
-
-//  ФУНКЦИЯ ОТКЛЮЧЕНИЯ КНОПКИ И ОБРАБОТЧИК СОБЫТИЯ НА INPUTы
+                renderComments({ comments })
+            })
+        })
+    }
+}

@@ -1,6 +1,6 @@
 import { delay } from './utils.js'
 import { renderComments } from './renderComments.js'
-import { commentInput } from './const.js'
+// import { commentInput } from './const.js'
 import { deletePost } from './API.js'
 import { user } from './main.js'
 
@@ -34,17 +34,15 @@ export const likeComment = (comments) => {
 // ФУНКЦИЯ ОТВЕТА НА КОММЕНТАРИЙ И ЕЕ ВЫЗОВ
 export const answerCommentListener = (comments) => {
     const commentsElement = document.querySelectorAll('.comment')
-
     for (const commentElement of commentsElement) {
         commentElement.addEventListener('click', () => {
+            console.log("hello")
             const index = commentElement.dataset.index
 
             if (comments[index].isEdited) return
 
-            let commentText = document.querySelector('.comment-text')
-            commentText.value = `QUOTE_BEGIN ${comments[index].name}: \n ${comments[index].text} QUOTE_END`
-            commentText.value = commentInput.innerHTML
-            renderComments({ comments })
+            let commentInput = document.querySelector('.add-form-text')
+            commentInput.value += `QUOTE_BEGIN ${comments[index].name}: \n ${comments[index].text} QUOTE_END`
         })
     }
 }
@@ -78,7 +76,7 @@ export const editComment = (comments) => {
 
 export const clickDelete = (comments) => {
     const deleteButton = document.querySelector('.delete-form-button')
-    console.log(deleteButton)
+
     if (user) {
         deleteButton.addEventListener('click', () => {
             const id = deleteButton.dataset.id

@@ -9,18 +9,16 @@ import { appElement, addForm } from './const.js'
 import { token, commentPost } from './API.js'
 import { renderLogin } from './renderLogin.js'
 import { getCommentation, user } from './main.js'
-import { format } from 'date-fns'
 
 export function renderComments({ comments, isLoading }) {
     // let commentSection = document.querySelector('.comments')
 
     const commentsHtml = comments
         .map((comment, index) => {
-            const now = new Date()
             return `<li class="comment" id="comment" data-index="${index}">
   <div class="comment-header">
     <div>${comment.name}</div>
-    <div>${format(now, 'yyyy-MM-dd hh.mm.ss')}</div>
+    <div>${comment.date}</div>
   </div>
   <div class="comment-body" data-index="${index}">
     ${

@@ -1,5 +1,5 @@
 const userURL = 'https://wedev-api.sky.pro/api/user/login'
-const commentsURL = 'https://wedev-api.sky.pro/api/v1/sveta-kosuhina/comments'
+const commentsURL = 'https://wedev-api.sky.pro/api/v2/sveta-kosuhina/comments'
 
 export let token
 
@@ -8,7 +8,6 @@ export const setToken = (newToken) => {
 }
 
 import { sanitizeHtml } from './utils.js'
-import { nameInput, commentInput } from './const.js'
 
 export function getComments() {
     return fetch(commentsURL, {
@@ -18,15 +17,13 @@ export function getComments() {
         },
     }).then((response) => {
         if (response.status === 500) {
-            throw new Error('Сервер сломался')
+            alert('Кажется, сервер сломался...')
         }
         return response.json()
     })
 }
 
-export function commentPost() {
-    let commentInput = document.querySelector('.add-form-text')
-    console.log(commentInput.value)
+export function commentPost(nameInput) {
     return fetch(commentsURL, {
         method: 'POST',
         headers: {
@@ -34,13 +31,13 @@ export function commentPost() {
         },
         body: JSON.stringify({
             // name: sanitizeHtml(nameInput.value),
-            text: "dfghj",
+            text: sanitizeHtml(nameInput.value),
         }),
     }).then((response) => {
         if (response.status === 400) {
-            throw new Error('Плохой запрос')
+            alert('Попробуйте снова')
         } else if (response.status === 500) {
-            throw new Error('Сервер сломался')
+            alert('Кажется, сервер сломался...')
         }
         if (response.status === 201) {
             return response.json()
@@ -57,12 +54,27 @@ export function login({ login, password }) {
     }).then((responseData) => {
         console.log(responseData)
         if (responseData.status === 401) {
-            throw new Error('Нет авторизации')
+            alert('Пройдите авторизацию!')
         } else if (responseData.status === 400) {
-            throw new Error('Неправильный логин или пароль')
+            alert('Неправильный логин или пароль')
         }
         if (responseData.status === 201) {
             return responseData.json()
+        }
+    })
+}
+export function deletePost(id) {
+    return fetch(commentsURL + `/${id}`, {
+        method: 'DELETE',
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    }).then((responseData) => {
+        console.log(id)
+        if (responseData.status === 201) {
+            return responseData.json()
+        } else {
+            alert('Невозможно удалить комментарий')
         }
     })
 }

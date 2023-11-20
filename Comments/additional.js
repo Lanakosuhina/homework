@@ -36,7 +36,7 @@ export const answerCommentListener = (comments) => {
     const commentsElement = document.querySelectorAll('.comment')
     for (const commentElement of commentsElement) {
         commentElement.addEventListener('click', () => {
-            console.log("hello")
+            console.log('hello')
             const index = commentElement.dataset.index
 
             if (comments[index].isEdited) return

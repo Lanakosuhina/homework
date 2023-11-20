@@ -4,8 +4,7 @@ import {
     editComment,
     clickDelete,
 } from './additional.js'
-import { commentInput } from './const.js'
-import { appElement, addForm } from './const.js'
+import { appElement, addForm, commentInput } from './const.js'
 import { token, commentPost } from './API.js'
 import { renderLogin } from './renderLogin.js'
 import { getCommentation, user } from './main.js'
@@ -70,9 +69,6 @@ export function renderComments({ comments, isLoading }) {
   `
 
     appElement.innerHTML = appHtml
-
-    // addLoader.style.display = 'block';
-    // document.body.style.overflow = 'hidden';
 
     likeComment(comments)
     answerCommentListener(comments)

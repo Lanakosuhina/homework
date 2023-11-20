@@ -17,7 +17,7 @@ export function getComments() {
         },
     }).then((response) => {
         if (response.status === 500) {
-            throw new Error('Сервер сломался')
+            alert('Кажется, сервер сломался...')
         }
         return response.json()
     })
@@ -35,9 +35,9 @@ export function commentPost(nameInput) {
         }),
     }).then((response) => {
         if (response.status === 400) {
-            throw new Error('Плохой запрос')
+            alert('Попробуйте снова')
         } else if (response.status === 500) {
-            throw new Error('Сервер сломался')
+            alert('Кажется, сервер сломался...')
         }
         if (response.status === 201) {
             return response.json()
@@ -54,9 +54,9 @@ export function login({ login, password }) {
     }).then((responseData) => {
         console.log(responseData)
         if (responseData.status === 401) {
-            throw new Error('Нет авторизации')
+            alert('Пройдите авторизацию!')
         } else if (responseData.status === 400) {
-            throw new Error('Неправильный логин или пароль')
+            alert('Неправильный логин или пароль')
         }
         if (responseData.status === 201) {
             return responseData.json()
@@ -74,7 +74,7 @@ export function deletePost(id) {
         if (responseData.status === 201) {
             return responseData.json()
         } else {
-            throw new Error('Невозможно удалить комментарий')
+            alert('Невозможно удалить комментарий')
         }
     })
 }

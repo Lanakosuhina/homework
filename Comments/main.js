@@ -2,13 +2,17 @@ import { getComments } from './API.js'
 import { renderComments } from './renderComments.js'
 import { renderLogin } from './renderLogin.js'
 import { format } from 'date-fns'
+// import { getUserFromLocalStorage, saveUserToLocalStorage } from './utils.js'
+
 export let comments = []
 
 export let isLoading = true
 export let user
+//getUserFromLocalStorage()
 
 export const setUser = (newUser) => {
     user = newUser
+    // saveUserToLocalStorage(user)
 }
 
 export const getCommentation = () => {

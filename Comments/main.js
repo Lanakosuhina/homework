@@ -1,13 +1,18 @@
 import { getComments } from './API.js'
 import { renderComments } from './renderComments.js'
 import { renderLogin } from './renderLogin.js'
+import { format } from 'date-fns'
+// import { getUserFromLocalStorage, saveUserToLocalStorage } from './utils.js'
+
 export let comments = []
 
 export let isLoading = true
 export let user
+//getUserFromLocalStorage()
 
 export const setUser = (newUser) => {
     user = newUser
+    // saveUserToLocalStorage(user)
 }
 
 export const getCommentation = () => {
@@ -16,16 +21,7 @@ export const getCommentation = () => {
             comments = responseData.comments.map((comment) => {
                 return {
                     name: comment.author.name,
-                    date: new Date(comment.date)
-                        .toLocaleString('ru-RU', {
-                            year: '2-digit',
-                            month: '2-digit',
-                            day: '2-digit',
-                            hour: '2-digit',
-                            minute: '2-digit',
-                            hour12: false,
-                        })
-                        .replace(',', ''),
+                    date: format(new Date(comment.date), 'yyyy-MM-dd hh.mm.ss'),
                     text: comment.text,
                     likesCount: comment.likes,
                     isLiked: false,

@@ -2,24 +2,22 @@ import {
     likeComment,
     answerCommentListener,
     editComment,
+    clickDelete,
 } from './additional.js'
-import { commentInput } from './const.js'
-import { appElement, addForm } from './const.js'
+import { appElement, addForm, commentInput } from './const.js'
 import { token, commentPost } from './API.js'
 import { renderLogin } from './renderLogin.js'
 import { getCommentation, user } from './main.js'
-import { format } from 'date-fns'
 
 export function renderComments({ comments, isLoading }) {
     // let commentSection = document.querySelector('.comments')
 
     const commentsHtml = comments
         .map((comment, index) => {
-            const now = new Date()
             return `<li class="comment" id="comment" data-index="${index}">
   <div class="comment-header">
     <div>${comment.name}</div>
-    <div>${format(now, 'yyyy-MM-dd hh.mm.ss')}</div>
+    <div>${comment.date}</div>
   </div>
   <div class="comment-body" data-index="${index}">
     ${
@@ -72,39 +70,34 @@ export function renderComments({ comments, isLoading }) {
 
     appElement.innerHTML = appHtml
 
-    // addLoader.style.display = 'block';
-    // document.body.style.overflow = 'hidden';
-
     likeComment(comments)
     answerCommentListener(comments)
     editComment(comments)
+    clickDelete(comments)
 
     const linkToLoginElement = document.getElementById('link-to-login')
     let addButton = document.querySelector('.add-form-button')
-    console.log(addButton)
     linkToLoginElement?.addEventListener('click', () => {
         // null или undef. обработчик события не сработает
         renderLogin()
     })
     if (user) {
         if (addButton) {
-            console.log("gdfghjkl")
-            // commentInput.addEventListener('input')
+            //  commentInput.addEventListener('input')
 
             addButton.addEventListener('click', pullComment)
 
-            // addButton.addEventListener('keyup', function (event) {
-            //     if (event.which === 13) {
-            //         pullComment()
-            //     }
-            // })
+            addButton.addEventListener('keyup', function (event) {
+                if (event.which === 13) {
+                    pullComment()
+                }
+            })
             return
         }
     }
 
     function pullComment(event) {
         let commentInput = document.querySelector('.add-form-text')
-        console.log(commentInput)
         if (commentInput.value === '') {
             commentInput.classList.add('error')
             return
@@ -114,7 +107,7 @@ export function renderComments({ comments, isLoading }) {
         addButton.textContent = 'Комментарий добавляется...'
 
         event.stopPropagation()
-        commentPost()
+        commentPost(commentInput)
             .then(() => {
                 return [commentInput.value]
             })

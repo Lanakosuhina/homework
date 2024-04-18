@@ -1,8 +1,3 @@
-import { addButton } from './const.js'
-import { renderComments } from './renderComments.js'
-import { comments } from './main.js'
-// ФУНКЦИЯ ЗАМЕНЫ СИМВОЛОВ
-
 export const sanitizeHtml = (htmlString) => {
     return htmlString
         .replaceAll('&', '&amp;')
@@ -20,3 +15,20 @@ export function delay(interval = 300) {
         }, interval)
     })
 }
+
+export function saveUserToLocalStorage(user) {
+    window.localStorage.setItem('user', JSON.stringify(user))
+}
+
+export function getUserFromLocalStorage(user) {
+    try {
+        console.log(user)
+        return JSON.parse(window.localStorage.getItem('user'))
+    } catch (error) {
+        return null
+    }
+}
+
+// export function removeUserFromLocalStorage(user) {
+//     window.localStorage.removeItem('user')
+// }
